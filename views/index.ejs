@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script> 
+	<script src="/javascripts/dmv.min.js"></script>	   
+    <script src="/socket.io/socket.io.js"></script>
+	<title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <div id="textarea"></div>
+	<div class="userinput">
+		<form id="chatform" onsubmit="sendMessage(event)">
+			<input type="text" size="200" id="msgbox" value="" />
+			<input type="submit">
+		</form>
+	</div>
+	<div id="frame">
+	    <video id="live" width="320" height="240" autoplay style="display: none;"></video>
+	    <canvas width="320" id="canvas" height="240" style="display: inline;"></canvas>
+	</div>
+	<img width="320" id="partnerCanvas" height="240" style="display: inline;" />
+  	<script type="text/javascript">
+  	$(document).ready(function(){
+  	camWidth = 320;
+  	camHeight = 240;
+
+  	function changeSize(w){
+  		camWidth = w;
+  		camHeight = w * 0.75;
+
+  		$("#video, #canvas, #partnerCanvas").height(camHeight).width(camWidth);
+  		$("#video, #canvas").click(function(){
+  			if (w==320) changeSize(640);
+  			else changeSize(320);
+  			});
+  		};
+
+  	window.URL = window.URL || window.webkitURL;
+  	console.log(window.URL);
+	navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                          navigator.mozGetUserMedia || navigator.msGetUserMedia;
+                          	
+  	var video = $("#live").get()[0];
+    var canvas = $("#canvas");
+    var ctx = canvas.get()[0].getContext('2d');
+ 	
+    navigator.webkitGetUserMedia({video:!0},function(stream) {video.src = webkitURL.createObjectURL(stream);},
+            function(err) {
+                console.log("Unable to get video stream!")
+            }
+    )
+	 
+	timer = setInterval(
+        function () {
+            ctx.drawImage(video, 0, 0, camWidth, camHeight);
+            var data = canvas.get()[0].toDataURL('image/jpeg', 1.0);
+            newblob = dataURItoBlob(data);
+            socket.emit("webcam",{"img":data});
+        }, 250);
+
+  	textarea = $("#textarea");
+  	msgbox = $("#msgbox");
+  	$(msgbox).focus();
+  	$(textarea).height("63%");
+  	$(textarea).width("90%");
+  	$(window).resize(function(){
+  		$(textarea).height("63%");
+  		$(textarea).width("90%");
+  	})
+  	scrollDownText = function(){
+  		$("#textarea").scrollTop($("#textarea")[0].scrollHeight+20);
+  	};
+
+  	showMessage = function(el, m){
+  		line = $("<p/>").text(unescape(m)).hide();
+		$(el).append(line);
+		line.fadeIn();
+  	}
+  	socket = io.connect('192.168.178.20');
+		socket.on('message', function(message) {
+			if (message instanceof Array) {
+				$.each(message, function(index){
+					showMessage("#textarea",message[index]);
+				})
+			}	
+			else {
+				showMessage("#textarea",message);
+
+			}
+			scrollDownText();
+		});
+
+		socket.on('webcam',function(object){
+			$("#partnerCanvas").attr("src",object.img.img);
+		});
+
+		function dataURItoBlob(dataURI) {
+	    // convert base64 to raw binary data held in a string
+	    // doesn't handle URLEncoded DataURIs
+	    var byteString = atob(dataURI.split(',')[1]);
+
+	    // separate out the mime component
+	    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+	    // write the bytes of the string to an ArrayBuffer
+	    var ab = new ArrayBuffer(byteString.length);
+	    var ia = new Uint8Array(ab);
+	    for (var i = 0; i < byteString.length; i++) {
+	        ia[i] = byteString.charCodeAt(i);
+	    }
+
+	    // write the ArrayBuffer to a blob, and you're done
+	    var bb;
+	    try {
+	        bb = new BlobBuilder();
+	    } catch(e) {
+	        try {
+	            bb = new WebKitBlobBuilder();
+	        } catch(e) {
+	            bb = new MozBlobBuilder();
+	        }
+	    }
+	    bb.append(ab);
+	    return bb.getBlob(mimeString);
+		}
+  	})
+  	$(window).resize(function(){scrollDownText();})
+  	sendMessage = function(event){
+  		event.preventDefault();
+  		socket.send($(msgbox).val(),function(){$(msgbox).val("")});
+  		return false;
+  	}; 
+  	</script>
+  </body>
+</html>
