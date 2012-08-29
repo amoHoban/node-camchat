@@ -51,7 +51,7 @@ server.listen(app.get('port'), function(){
 
 io.configure(function () { 
   io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
+  io.set("polling duration", 2); 
 });
 
 io.sockets.on('connection', function (client) {
@@ -65,7 +65,7 @@ io.sockets.on('connection', function (client) {
   });
   client.on('webcam', function (data) {
      client.broadcast.emit('webcam',{'img':data});
-  });
+  }); 
  
 });
 
