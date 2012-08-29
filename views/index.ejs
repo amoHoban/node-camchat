@@ -78,7 +78,8 @@
 		$(el).append(line);
 		line.fadeIn();
   	}
-  	socket = io.connect(document.domain);
+    
+  	socket = io.connect();
 		socket.on('message', function(message) {
 			if (message instanceof Array) {
 				$.each(message, function(index){
