@@ -98,6 +98,9 @@
     socket.on("newUser",function(){
       $(textarea).append("<p class='alert'>New User joined</p>");
     })
+    socket.on("user disconnected",function(){
+      $(textarea).append("<p class='alert'>User disconnected</p>");
+    })
 
 		function dataURItoBlob(dataURI) {
 	    // convert base64 to raw binary data held in a string
@@ -129,6 +132,7 @@
 	    return bb.getBlob(mimeString);
 		}
   	})
+
   	$(window).resize(function(){scrollDownText();})
   	sendMessage = function(event){
   		event.preventDefault();

@@ -58,6 +58,7 @@ io.sockets.on('connection', function (client) {
   io.sockets.emit("newUser");
   io.sockets.json.send(msgs);
   client.on('message', function (data) {
+    console.log(data);
     if (data.length > 2 ) {
     msg = escapeHTML(data);
     msgs.push(msg);
@@ -65,11 +66,13 @@ io.sockets.on('connection', function (client) {
     }
   });
   client.on('webcam', function (data) {
-    if ((new Date().getTime() - time) >= 1000);
+    if ((new Date().getTime() - time) >= 200);
       time = new Date().getTime();
      client.broadcast.emit('webcam',{'img':data});
   }); 
- 
+ client.on('disconnect', function () {
+    io.sockets.emit('user disconnected');
+  });
 });
 
 function escapeHTML(strVal) {
