@@ -38,8 +38,7 @@
   		};
 
   	window.URL = window.URL || window.webkitURL;
-  	console.log(window.URL);
-	navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+	 navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia ||
                           navigator.mozGetUserMedia || navigator.msGetUserMedia;
                           	
   	var video = $("#live").get()[0];
@@ -78,7 +77,7 @@
 		$(el).append(line);
 		line.fadeIn();
   	}
-    
+
   	socket = io.connect();
 		socket.on('message', function(message) {
 			if (message instanceof Array) {
@@ -96,6 +95,9 @@
 		socket.on('webcam',function(object){
 			$("#partnerCanvas").attr("src",object.img.img);
 		});
+    socket.on("newUser",function(){
+      $(textarea).append("<p class='alert'>New User joined</p>");
+    })
 
 		function dataURItoBlob(dataURI) {
 	    // convert base64 to raw binary data held in a string

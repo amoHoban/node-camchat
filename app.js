@@ -51,11 +51,11 @@ server.listen(app.get('port'), function(){
 });
 
 io.configure(function () { 
-    io.set("transports", ["xhr-polling"]);
-    io.set("polling duration", 1);
+
 });
 
 io.sockets.on('connection', function (client) {
+  io.sockets.emit("newUser");
   io.sockets.json.send(msgs);
   client.on('message', function (data) {
     if (data.length > 2 ) {
@@ -73,8 +73,6 @@ io.sockets.on('connection', function (client) {
 });
 
 function escapeHTML(strVal) {
-  console.log( strVal );
   strVal = strVal.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  console.log( strVal );
   return strVal;
 }
