@@ -51,7 +51,8 @@ server.listen(app.get('port'), function(){
 });
 
 io.configure(function () { 
-  
+    io.set("transports", ["xhr-polling"]);
+    io.set("polling duration", 1);
 });
 
 io.sockets.on('connection', function (client) {
