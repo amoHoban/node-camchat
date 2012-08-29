@@ -13,6 +13,7 @@ var express = require('express')
 msgs = utils.FixedQueue(50,[]);
 msg ="";
 var app = express();
+time = new Date().getTime(); 
 
 app.configure(function(){
   app.set('port', process.env.PORT || 8000);
@@ -50,8 +51,7 @@ server.listen(app.get('port'), function(){
 });
 
 io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 2); 
+  
 });
 
 io.sockets.on('connection', function (client) {
@@ -64,6 +64,8 @@ io.sockets.on('connection', function (client) {
     }
   });
   client.on('webcam', function (data) {
+    if ((new Date().getTime() - time) >= 1000);
+      time = new Date().getTime();
      client.broadcast.emit('webcam',{'img':data});
   }); 
  
