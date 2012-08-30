@@ -37,10 +37,7 @@ app.configure('development', function(){
 index = [];
 index.title = "My little ugly node.js chat";
 
-app.get('/', routes.index);
-// Index
 
-app.get("/test",routes.test);
 
 var server = http.createServer(app);
 
@@ -55,18 +52,24 @@ io.configure(function () {
 });
 
 io.sockets.on('connection', function (client) {
-  io.sockets.emit("newUser");
+  // Index
+  client.on('set nickname', function (nick) {
+    client.nickname = nick;
+      io.sockets.emit("newUser",nick);
+      return true;
+  
+  });
+  
   io.sockets.json.send(msgs);
   client.on('message', function (data) {
-    console.log(data);
     if (data.length > 2 ) {
-    msg = escapeHTML(data);
-    msgs.push(msg);
+    msg = client.nickname +" says " + escapeHTML(data);
+   // msgs.push(msg);
     io.sockets.send(msg);
     }
   });
   client.on('webcam', function (data) {
-    if ((new Date().getTime() - time) >= 200);
+    if ((new Date().getTime() - time) >= 250);
       time = new Date().getTime();
      client.broadcast.emit('webcam',{'img':data});
   }); 
@@ -74,6 +77,24 @@ io.sockets.on('connection', function (client) {
     io.sockets.emit('user disconnected');
   });
 });
+
+app.get("/",routes.index);
+app.post("/",function(req, res){
+  if (!checkClientNickName(req.param("nickname",""))) {
+      //req.flash('error','Please use a valid nickname');
+      res.render("login", {"title":index.title});
+  }
+  else {
+    res.render("index",{"title":index.title,"nickname":req.param("nickname")});
+  }
+});
+app.get("/test",routes.test);
+
+
+function checkClientNickName(strVal){
+  if (strVal == null) return false;
+  return strVal.length > 3;
+}
 
 function escapeHTML(strVal) {
   strVal = strVal.replace(/</g, "&lt;").replace(/>/g, "&gt;");
