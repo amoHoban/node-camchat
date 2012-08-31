@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
+  <link rel='stylesheet' href='/css/style.css' />
   </head>
   <body>
+    <div style="margin:0 auto;width:50%">
     <h1><%= title %></h1>
     <form method="POST" action="/">
 	    <label for="nickname">Choose a nickname</label>
-	    <input type="text" value="" name="nickname" />
-	    <input type="submit" value="GO" />
-	</form>
+      <div class="input-append">
+      <input class="span2" id="appendedInputButton" size="16" name="nickname" type="text"><button class="btn" type="button">GO!
+    </button>
+    </div>
+    </form>
+  </div>
+  <script src="/js/bootstrap.min.js"></script>
   </body> 
 </html>

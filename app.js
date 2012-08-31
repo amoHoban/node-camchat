@@ -47,33 +47,42 @@ server.listen(app.get('port'), function(){
 io.configure(function () { 
 
 });
-
-io.sockets.on('connection', function (client) {
+//use namespaces
+var chat = io
+.of('/chat').on('connection', function (client) {
   // Index
   client.on('set nickname', function (nick) {
     client.nickname = nick;
-      io.sockets.emit("newUser",nick);
+      chat.emit("newUser",nick);
       return true;
   
   });
   
-  io.sockets.json.send(msgs);
+  //client.send(msgs);
   client.on('message', function (data) {
     if (data.length > 2 ) {
-    msg = client.nickname +" says: " + escapeHTML(data);
+      client.lastMessageTime = new Date().getTime();
+    msg = '<span class="nick">'
+          + client.nickname 
+          + '</span>'
+          + "<strong>:</strong>" 
+          + escapeHTML(data);
    // msgs.push(msg);
-    io.sockets.send(msg);
+    chat.emit('message',{'text':msg, 'time':client.lastMessageTime});
     }
   });
-  client.on('webcam', function (data) {
-    if ((new Date().getTime() - time) >= 250){
-      time = new Date().getTime();
-     client.broadcast.emit('webcam',{'img':data});
-     }
-  }); 
+ 
  client.on('disconnect', function () {
-    io.sockets.emit('user disconnected',client.nickname);
+    chat.emit('user disconnected',client.nickname);
   });
+});
+
+var cam = io
+.of('/cam').on('connection',function(camclient){
+   camclient.on('webcam', function (data) {
+     camclient.broadcast.send('webcam',{'img':data});
+     camclient.disconnect();
+  }); 
 });
 
 app.get("/",routes.index);
