@@ -7,7 +7,7 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1>Hi <%= nickname %>, <%= title %></h1>
+    <h1>Hi <%= nickname %>, welcome to <%= title %></h1>
     <div id="textarea"></div>
 	<div class="userinput">
 		<form id="chatform" onsubmit="sendMessage(event)">
@@ -16,15 +16,53 @@
 		</form>
 	</div>
 	<div id="frame">
-	    <video id="live" width="320" height="240" autoplay style="display: none;"></video>
-	    <canvas width="320" id="canvas" height="240" style="display: inline;"></canvas>
+	    <video id="live" width="280" height="210" autoplay style="display: none;"></video>
+	    <canvas width="280" id="canvas" height="210" style="display: inline;"></canvas>
 	</div>
-	<img width="320" id="partnerCanvas" height="240" style="display: inline;" />
+	<img width="280" id="partnerCanvas" height="210" style="display: inline;" />
   	<script type="text/javascript">
   	$(document).ready(function(){
-  	camWidth = 320;
-  	camHeight = 240;
+  	textarea = $("#textarea");
+    msgbox = $("#msgbox");
+    camWidth = 280;
+    camHeight = 210;
 
+    scrollDownText = function(){
+      $("#textarea").scrollTop($("#textarea")[0].scrollHeight+20);
+    };
+
+
+    socket = io.connect();
+    socket.on("connect",function(){
+      socket.emit("set nickname","<%= nickname %>");
+    })
+    socket.on('message', function(message) {
+      if (message instanceof Array) {
+        $.each(message, function(index){
+          showMessage("#textarea",message[index]);
+        })
+      } 
+      else {
+        showMessage("#textarea",message);
+
+      }
+      scrollDownText();
+    });
+
+    socket.on('webcam',function(object){
+      $("#partnerCanvas").attr("src",object.img.img);
+    });
+    socket.on("newUser",function(data){
+      console.log(data);
+      $(textarea).append("<p class='alert'>User "+data+" joined</p>");
+    })
+    socket.on("user disconnected",function(user){
+      $(textarea).append("<p class='alert'>User +"+user+" disconnected</p>");
+    })
+
+
+
+    
   	function changeSize(w){
   		camWidth = w;
   		camHeight = w * 0.75;
@@ -36,6 +74,10 @@
   			});
   		};
 
+    function removeSenderVideo(){
+      $("#video, #canvas").remove();
+    }
+
   	window.URL = window.URL || window.webkitURL;
 	 navigator.getUserMedia  = (navigator.getUserMedia || navigator.webkitGetUserMedia ||
                           navigator.mozGetUserMedia || navigator.msGetUserMedia);
@@ -43,22 +85,24 @@
   	var video = $("#live").get()[0];
     var canvas = $("#canvas");
     var ctx = canvas.get()[0].getContext('2d');
- 	
+ 	  if (typeof navigator.getUserMedia== 'function') {
     navigator.getUserMedia({video:!0},function(stream) {video.src = window.URL.createObjectURL(stream);},
             function(err) {
                 console.log("Unable to get video stream!")
             }
     )
 	 
-	timer = setInterval(
+	 timer = setInterval(
         function () {
             ctx.drawImage(video, 0, 0, camWidth, camHeight);
             var data = canvas.get()[0].toDataURL('image/jpeg', 1.0);
             socket.emit("webcam",{"img":data});
     }, 250);
 
-  	textarea = $("#textarea");
-  	msgbox = $("#msgbox");
+  	}
+    else {
+      removeSenderVideo();
+    }
   	$(msgbox).focus();
   	$(textarea).height("63%");
   	$(textarea).width("90%");
@@ -66,44 +110,14 @@
   		$(textarea).height("63%");
   		$(textarea).width("90%");
   	})
-  	scrollDownText = function(){
-  		$("#textarea").scrollTop($("#textarea")[0].scrollHeight+20);
-  	};
-
+  	
   	showMessage = function(el, m){
   		line = $("<p/>").text(unescape(m)).hide();
 		$(el).append(line);
 		line.fadeIn();
   	}
 
-  	socket = io.connect();
-    socket.on("connect",function(){
-      socket.emit("set nickname","<%= nickname %>");
-    })
-		socket.on('message', function(message) {
-			if (message instanceof Array) {
-				$.each(message, function(index){
-					showMessage("#textarea",message[index]);
-				})
-			}	
-			else {
-				showMessage("#textarea",message);
-
-			}
-			scrollDownText();
-		});
-
-		socket.on('webcam',function(object){
-			$("#partnerCanvas").attr("src",object.img.img);
-		});
-    socket.on("newUser",function(data){
-      console.log(data);
-      $(textarea).append("<p class='alert'>User "+data+" joined</p>");
-    })
-    socket.on("user disconnected",function(){
-      $(textarea).append("<p class='alert'>User disconnected</p>");
-    })
-
+  	
 	
   	$(window).resize(function(){scrollDownText();})
   	sendMessage = function(event){

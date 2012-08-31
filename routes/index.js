@@ -3,8 +3,10 @@
  * GET home page.
  */
 
+messages = require('../messages.json');
+
 exports.index = function(req, res){
-  res.render('login', { title: index.title });
+  res.render('login', { title: messages.index.title });
 };
 
 exports.test = function(req, res){

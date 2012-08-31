@@ -8,6 +8,7 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , utils = require('./utils.js')
+  , messages = require('./messages');
 
 
 msgs = utils.FixedQueue(50,[]);
@@ -34,10 +35,6 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-index = [];
-index.title = "My little ugly node.js chat";
-
-
 
 var server = http.createServer(app);
 
@@ -63,18 +60,19 @@ io.sockets.on('connection', function (client) {
   io.sockets.json.send(msgs);
   client.on('message', function (data) {
     if (data.length > 2 ) {
-    msg = client.nickname +" says " + escapeHTML(data);
+    msg = client.nickname +" says: " + escapeHTML(data);
    // msgs.push(msg);
     io.sockets.send(msg);
     }
   });
   client.on('webcam', function (data) {
-    if ((new Date().getTime() - time) >= 250);
+    if ((new Date().getTime() - time) >= 250){
       time = new Date().getTime();
      client.broadcast.emit('webcam',{'img':data});
+     }
   }); 
  client.on('disconnect', function () {
-    io.sockets.emit('user disconnected');
+    io.sockets.emit('user disconnected',client.nickname);
   });
 });
 
@@ -82,10 +80,10 @@ app.get("/",routes.index);
 app.post("/",function(req, res){
   if (!checkClientNickName(req.param("nickname",""))) {
       //req.flash('error','Please use a valid nickname');
-      res.render("login", {"title":index.title});
+      res.render("login", {"title":messages.index.title});
   }
   else {
-    res.render("index",{"title":index.title,"nickname":req.param("nickname")});
+    res.render("index",{"title":messages.index.title,"nickname":req.param("nickname")});
   }
 });
 app.get("/test",routes.test);
