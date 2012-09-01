@@ -49,8 +49,8 @@ p.even {
 }
 .msgtime {float:right;}
 #frame {position:absolute;top:0;right:0;}
-#canvas {display:none;}
-#partnerCanvas {position:absolute;top:240px;right:0;}
+#canvas {display:none;cursor:move;}
+#partnerCanvas {position:absolute;top:240px;right:0;cursor:move;}
 .nick {font-weight:bold;}
 .fluid-container {height:100%;}
 .middle {height:75%;}

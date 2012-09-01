@@ -6,18 +6,19 @@
 messages = require('../messages.json');
 
 exports.login = function(req, res){
-  res.render('login', { title: messages.index.title });
+  res.render('login');
 };
 
 exports.index = function(req, res){
-  res.render('login', { title: messages.index.title });
+	console.log(res.locals);
+  res.render('login');
 };
 
 exports.test = function(req, res){
-  res.render('test', { title: 'Test' });
+  res.render('test');
 };
 
 exports.error404 = function(req, res){
-  res.render('error404', { title: 'Ooops! Page not found' });
+  res.render('error404');
 };
 

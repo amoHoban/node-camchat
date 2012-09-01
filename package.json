@@ -1,6 +1,6 @@
 {
   "name": "snype",
-  "version": "0.0.1-19",
+  "version": "0.0.1-20",
   "private": true,
   "engines": {
     "node": "0.8.x",
@@ -10,8 +10,8 @@
     "express": ">= 3.0.0rc2",
     "ejs": "*",
     "stylus": "*",
-    "socket.io": "latest",
-    "express-partials": "*"
+    "socket.io": "*",
+    "ejs-locals": "*",
   },
   "subdomain": "snype",
   "scripts": {

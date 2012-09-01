@@ -5,14 +5,17 @@
   <link href="/css/bootstrap.min.css" rel="stylesheet">
   <link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
   <link rel='stylesheet' href='/css/style.css' />
+  <%-stylesheets%>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script> 
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
   <script src="/js/functions.js"></script> 
- 
 	<title><%= title %></title>
   </head>
   <body>
+    <%-blocks.header%>
      	  <%- body %>
-
+    <%-blocks.footer%>
     <script src="/js/bootstrap.min.js"></script>  
+    <%-scripts%>
   </body>
 </html>

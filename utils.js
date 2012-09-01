@@ -1,1 +1,25 @@
-exports.FixedQueue = function(e,t){t=t||[];var n=Array.apply(null,t);return n.fixedSize=e,n.push=exports.FixedQueue.push,n.splice=exports.FixedQueue.splice,n.unshift=exports.FixedQueue.unshift,exports.FixedQueue.trimTail.call(n),n};exports.FixedQueue.trimHead=function(){if(this.length<=this.fixedSize)return;Array.prototype.splice.call(this,0,this.length-this.fixedSize)},exports.FixedQueue.trimTail=function(){if(this.length<=this.fixedSize)return;Array.prototype.splice.call(this,this.fixedSize,this.length-this.fixedSize)},exports.FixedQueue.wrapMethod=function(e,t){var n=function(){var n=Array.prototype[e],r=n.apply(this,arguments);return t.call(this),r};return n},exports.FixedQueue.push=exports.FixedQueue.wrapMethod("push",exports.FixedQueue.trimHead),exports.FixedQueue.splice=exports.FixedQueue.wrapMethod("splice",exports.FixedQueue.trimTail),exports.FixedQueue.unshift=exports.FixedQueue.wrapMethod("unshift",exports.FixedQueue.trimTail);
+exports.checkClientNickName = function(strVal){
+  if (strVal == null) return false;
+  return strVal.length > 3;
+}
+
+exports.escapeHTML = function(strVal) {
+  strVal = strVal.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return strVal;
+}
+
+exports.checkMessageLength = function(m){
+  if (m.length < 2 || m.length > 255)
+    return false;
+  return true;
+}
+
+exports.floodCheck = function(c){
+  if (!c || c<=0) return true;
+    if ((new Date().getTime() - c.lastMessageTime) > 500){
+        c.lastMessageTime = new Date().getTime();
+        return true;
+    }
+    c.lastMessageTime = new Date().getTime();
+    return false;
+}

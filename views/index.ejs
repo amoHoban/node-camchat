@@ -1,4 +1,4 @@
-
+<%- layout('layout') %>
     <div class="fluid-container">
     <div class="row">
       <div class="span8">
@@ -58,12 +58,12 @@
       $(textarea).append(line);
     })
     chatsocket.on("user disconnected",function(user){
-      $(textarea).append("<p class='alert'>User +"+user+" disconnected</p>");
+      $(textarea).append("<p class='alert'>User " + user + " disconnected</p>");
     })
 
     camsocket = io.connect('/cam')
-    camsocket.on('webcam',function(object){
-      $("#partnerCanvas").attr("src",object.img.img);
+    camsocket.on('webcam',function(data){
+      $("#partnerCanvas").attr("src",data.img.img);
     });
    
   	function changeSize(w){
@@ -126,9 +126,9 @@
       return false;
     }; 	
   	$(window).resize(function(){scrollDownText($("#textarea"));})
-  	
+  	$("#canvas, #partnerCanvas").draggable();
   });
   
   	</script>
     </div>
-    <script src="/socket.io/socket.io.js"></script>
+    <%- script("/socket.io/socket.io.js","text/javascript") %>
