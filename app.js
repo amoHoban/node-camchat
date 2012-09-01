@@ -20,6 +20,7 @@ app.configure(function(){
   app.set('port', process.env.PORT || 8000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
+  app.set('view options', {'layout':'layout.ejs'});
   app.use(express.favicon());
   app.use(express.logger());
   app.use(express.bodyParser());
@@ -60,7 +61,7 @@ var chat = io
   
   //client.send(msgs);
   client.on('message', function (data) {
-    if (data.length > 2 ) {
+    if (checkMessageLength(data) ) {  
       client.lastMessageTime = new Date().getTime();
     msg = '<span class="nick">'
           + client.nickname 
@@ -81,10 +82,12 @@ var cam = io
 .of('/cam').on('connection',function(camclient){
    camclient.on('webcam', function (data) {
      camclient.broadcast.send('webcam',{'img':data});
-     camclient.disconnect();
-  }); 
+  });
+  camclient.on('disconnect', function () {
+     camclient.broadcast.emit('cam disconnected');
+  });  
 });
-
+app.get("/login", routes.login);
 app.get("/",routes.index);
 app.post("/",function(req, res){
   if (!checkClientNickName(req.param("nickname",""))) {
@@ -96,7 +99,7 @@ app.post("/",function(req, res){
   }
 });
 app.get("/test",routes.test);
-
+app.get("*",routes.error404);
 
 function checkClientNickName(strVal){
   if (strVal == null) return false;
@@ -106,4 +109,10 @@ function checkClientNickName(strVal){
 function escapeHTML(strVal) {
   strVal = strVal.replace(/</g, "&lt;").replace(/>/g, "&gt;");
   return strVal;
+}
+
+function checkMessageLength(m){
+  if (m.length < 3 || m.length > 255)
+    return false;
+  return true;
 }

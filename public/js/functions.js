@@ -1,3 +1,14 @@
+jQuery(document).ready(function(){
+    $("input").focus(function(){
+        if ($(this).attr("placeholder").length > 0) $(this).attr("_placeholder",$(this).attr("placeholder")).attr("placeholder","");
+    })
+
+    $("input").blur(function(){
+      if ($(this).attr("_placeholder").length > 0) $(this).attr("placeholder",$(this).attr("_placeholder"));
+    })
+
+})
+
 var formatTime = function(unixTimestamp) {
     var dt = new Date(unixTimestamp * 1000);
 
@@ -22,3 +33,5 @@ var formatTime = function(unixTimestamp) {
 var scrollDownText = function(el){
       el.scrollTop(el[0].scrollHeight+20);
 };
+
+

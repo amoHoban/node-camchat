@@ -13,22 +13,40 @@
 	<title><%= title %></title>
   </head>
   <body>
-    <h1>Hi <%= nickname %>, welcome to <%= title %></h1>
-    <div id="textarea"></div>
-	
-	<div id="frame" class="visible-desktop draggable">
-	    <video id="live" width="280" height="210" autoplay style="display: none;"></video>
-	    <canvas width="280" id="canvas" height="210" style="display: inline;"></canvas>
-	</div>
-  <div class="userinput">
-    <form id="chatform" onsubmit="sendMessage(event)">
-      <div class="input-append">
-      <input class="span2 input-xxlarge" id="appendedInputButton" size="255" type="text"><button class="btn" type="button">Send!
-    </button>
+    <div class="fluid-container">
+    <div class="row">
+      <div class="span8">
+        <h1>Hi <%= nickname %>, welcome to <%= title %></h1>
+      </div>
+      <div class="span4">
+      </div>
     </div>
-    </form>
-  </div>
-	<img width="280" id="partnerCanvas" height="210" style="display: inline;" />
+    <div class="row middle">
+      <div class="span8">
+        <div id="textarea"></div>
+      </div>
+      <div class="span4">
+        <div id="frame" class="visible-desktop draggable">
+          <video id="live" width="280" height="210" autoplay style="display: none;"></video>
+          <canvas width="280" id="canvas" height="210" style="display: inline;"></canvas>
+        </div>
+        <img width="280" id="partnerCanvas" height="210" style="display: inline;" />
+        <div id="userlist">
+        </div>
+      </div>
+	   </div>
+     <div class="row">
+      <div class="span12">
+        <div class="userinput">
+          <form id="chatform" onsubmit="sendMessage(event)">
+            <div class="input-append">
+            <input class="span2 input-xxlarge" name="msg" placeholder="Your message..." id="appendedInputButton" size="255" type="text"><button class="btn" type="button">Send!
+          </button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
   	<script type="text/javascript">
   	$(document).ready(function(){
   	$('.alert').alert();
@@ -37,7 +55,7 @@
     camWidth = 280;
     camHeight = 210;
     oddEven = "odd";
-
+    $(msgbox).focus();
     chatsocket = io.connect('/chat');
     chatsocket.on("connect",function(){
       chatsocket.emit("set nickname","<%= nickname %>");
@@ -127,6 +145,7 @@
   
 
   	</script>
-  <script src="/js/bootstrap.min.js"></script>
+    </div>
+    <script src="/js/bootstrap.min.js"></script>
   </body>
 </html>

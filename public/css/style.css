@@ -1,47 +1,70 @@
+body, html {height:100%;}
+body {
+	background: -moz-linear-gradient(top,  rgba(252,252,247,0.56) 0%, rgba(249,248,242,0.78) 50%, rgba(249,248,242,0.82) 58%, rgba(244,242,242,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,247,0.56)), color-stop(50%,rgba(249,248,242,0.78)), color-stop(58%,rgba(249,248,242,0.82)), color-stop(100%,rgba(244,242,242,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(252,252,247,0.56) 0%,rgba(249,248,242,0.78) 50%,rgba(249,248,242,0.82) 58%,rgba(244,242,242,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(252,252,247,0.56) 0%,rgba(249,248,242,0.78) 50%,rgba(249,248,242,0.82) 58%,rgba(244,242,242,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(252,252,247,0.56) 0%,rgba(249,248,242,0.78) 50%,rgba(249,248,242,0.82) 58%,rgba(244,242,242,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(252,252,247,0.56) 0%,rgba(249,248,242,0.78) 50%,rgba(249,248,242,0.82) 58%,rgba(244,242,242,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8ffcfcf7', endColorstr='#f4f2f2',GradientType=0 ); /* IE6-9 */
+}
 h1 {
+	margin-left:5px;
 	padding:1% 1%;
-	margin-left:40px;
 	color:#08C;
 	text-shadow:1px 2px #eee;
 }
-body, html {height:100%;}
 a {
 }
 #textarea {
 	overflow-y:scroll;
-	max-width:70%;
+	padding:5px 10px;
+	height: 90%;
 	max-height:63%;
 	outline: 0;
 	border:0 none;
 	font-size:1em;
-	padding:5px 10px;
 }
 #textarea p {
 }
-p.msg {padding:4px 4px;margin:4px;}
+p.msg {margin:4px;padding:4px 4px;}
 p.even {
-	background:#fcfcfe;
 	border-top:1px solid #fbfbfb;
 }
 #textarea p strong {
 	margin:0 4px 0 2px;
 } 
 .userinput{
-	position:fixed;
 	bottom:0;
 	left:0;
 	padding:1%;
 	width:100%;
 	height:10%;
-	border:1px solid #666;
-	background:#fff;
+	background:#F4F2F2;
 }
 #appendedInputButton
 {
-	width:60%;
+	width:73%;
 }
 .msgtime {float:right;}
 #frame {position:absolute;top:0;right:0;}
 #canvas {display:none;}
 #partnerCanvas {position:absolute;top:240px;right:0;}
 .nick {font-weight:bold;}
+.fluid-container {height:100%;}
+.middle {height:75%;}
+#login{
+	width: 320px;
+	padding: 114px 0 0;
+	margin: auto;
+}
+#loginform{
+	margin-left: 8px;
+	padding: 26px 24px 46px;
+	font-weight: normal;
+	background: white;
+	border: 1px solid #E5E5E5;
+	-moz-box-shadow: rgba(200,200,200,0.7) 0 4px 10px -1px;
+	-webkit-box-shadow: rgba(200, 200, 200, 0.7) 0 4px 10px -1px;
+	box-shadow: rgba(200, 200, 200, 0.7) 0 4px 10px -1px;
+}

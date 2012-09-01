@@ -5,17 +5,21 @@
   <link href="/css/bootstrap.min.css" rel="stylesheet">
   <link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
   <link rel='stylesheet' href='/css/style.css' />
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script> 
+  <script src="/js/functions.js"></script> 
   </head>
   <body>
-    <div style="margin:0 auto;width:50%">
-    <h1><%= title %></h1>
-    <form method="POST" action="/">
-	    <label for="nickname">Choose a nickname</label>
-      <div class="input-append">
-      <input class="span2" id="appendedInputButton" size="16" name="nickname" type="text"><button class="btn" type="button">GO!
-    </button>
-    </div>
-    </form>
+  <div class="fluid-container">
+      <div id="login">
+          <form method="POST" action="/" id="loginform">
+            <h1><%= title %></h1>
+            <div class="input-append">
+            <input class="span9" id="appendedInputButton" size="32" name="nickname" placeholder="Choose a nickname.." type="text"><button class="btn" type="button">
+            GO!
+          </button>
+          </div>
+          </form>
+        </div>
   </div>
   <script src="/js/bootstrap.min.js"></script>
   </body> 
