@@ -113,13 +113,12 @@ function escapeHTML(strVal) {
 }
 
 function checkMessageLength(m){
-  if (m.length < 3 || m.length > 255)
+  if (m.length < 2 || m.length > 255)
     return false;
   return true;
 }
 
 function floodCheck(c){
-  console.log("LAST SHIT "+c.lastMessageTime);
   if (!c || c<=0) return true;
     if ((new Date().getTime() - c.lastMessageTime) > 500){
         c.lastMessageTime = new Date().getTime();
