@@ -52,6 +52,7 @@ io.configure(function () {
 var chat = io
 .of('/chat').on('connection', function (client) {
   // Index
+  client.lastMessageTime = 0;
   client.on('set nickname', function (nick) {
     client.nickname = nick;
       chat.emit("newUser",nick);
@@ -118,6 +119,7 @@ function checkMessageLength(m){
 }
 
 function floodCheck(c){
+  console.log("LAST SHIT "+c.lastMessageTime);
   if (!c || c<=0) return true;
     if ((new Date().getTime() - c.lastMessageTime) > 500){
         c.lastMessageTime = new Date().getTime();
