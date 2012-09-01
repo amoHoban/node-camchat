@@ -32,6 +32,7 @@ var formatTime = function(unixTimestamp) {
 
 var scrollDownText = function(el){
       el.scrollTop(el[0].scrollHeight+20);
+      $("body, html").height("100%");
 };
 
 

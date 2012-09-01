@@ -8,6 +8,7 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , utils = require('./utils.js')
+  , partials = require('express-partials')
   , messages = require('./messages');
 
 
@@ -20,7 +21,7 @@ app.configure(function(){
   app.set('port', process.env.PORT || 8000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
-  app.set('view options', {'layout':'layout.ejs'});
+  app.use(partials());
   app.use(express.favicon());
   app.use(express.logger());
   app.use(express.bodyParser());
@@ -38,7 +39,6 @@ app.configure('development', function(){
 
 
 var server = http.createServer(app);
-
 var io = require('socket.io').listen(server);
 
 server.listen(app.get('port'), function(){
@@ -61,7 +61,7 @@ var chat = io
   
   //client.send(msgs);
   client.on('message', function (data) {
-    if (checkMessageLength(data) ) {  
+    if (checkMessageLength(data) && floodCheck(this)) {  
       client.lastMessageTime = new Date().getTime();
     msg = '<span class="nick">'
           + client.nickname 
@@ -115,4 +115,14 @@ function checkMessageLength(m){
   if (m.length < 3 || m.length > 255)
     return false;
   return true;
+}
+
+function floodCheck(c){
+  if (!c || c<=0) return true;
+    if ((new Date().getTime() - c.lastMessageTime) > 500){
+        c.lastMessageTime = new Date().getTime();
+        return true;
+    }
+    c.lastMessageTime = new Date().getTime();
+    return false;
 }
