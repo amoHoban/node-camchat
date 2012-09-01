@@ -14,9 +14,9 @@
       <div class="span4">
         <div id="frame" class="visible-desktop draggable">
           <video id="live" width="280" height="210" autoplay style="display: none;"></video>
-          <canvas width="280" id="canvas" height="210" style="display: inline;"></canvas>
+          <canvas width="280" id="canvas" height="210"></canvas>
         </div>
-        <img width="280" id="partnerCanvas" height="210" style="display: inline;" />
+        <img width="280" id="partnerCanvas" height="210" />
         <div id="userlist">
         </div>
       </div>
@@ -63,6 +63,7 @@
 
     camsocket = io.connect('/cam')
     camsocket.on('webcam',function(data){
+      if ($("#partnerCanvas").is(":hidden")){$("#partnerCanvas").fadeIn('slow')}
       $("#partnerCanvas").attr("src",data.img.img);
     });
    
@@ -88,7 +89,9 @@
     var canvas = $("#canvas");
     var ctx = canvas.get()[0].getContext('2d');
  	  if (typeof navigator.getUserMedia== 'function') {
-    navigator.getUserMedia({video:!0},function(stream) {video.src = window.URL.createObjectURL(stream);},
+    navigator.getUserMedia({video:!0},function(stream) {
+      $("#canvas").fadeIn("slow");
+      video.src = window.URL.createObjectURL(stream);},
             function(err) {
                 console.log("Unable to get video stream!")
             }
@@ -126,7 +129,8 @@
       return false;
     }; 	
   	$(window).resize(function(){scrollDownText($("#textarea"));})
-  	$("#canvas, #partnerCanvas").draggable();
+    $("#canvas, #partnerCanvas").draggable({'snap':true,'containment':'window'});
+
   });
   
   	</script>

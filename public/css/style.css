@@ -49,8 +49,10 @@ p.even {
 }
 .msgtime {float:right;}
 #frame {position:absolute;top:0;right:0;}
-#canvas {display:none;cursor:move;}
-#partnerCanvas {position:absolute;top:240px;right:0;cursor:move;}
+#canvas, #partnerCanvas {display:none;cursor:move;z-index:1000;border:10px solid #eee;box-shadow:2px 2px 3px #444;}
+#partnerCanvas {position:absolute;top:240px;right:0;cursor:move;z-index:1000;border:10px solid #eee;box-shadow:2px 2px 3px #444;}
+.ui-draggable-dragging {box-shadow:8px 12px 25px #999!important;border:10px solid #fff!important;}
+
 .nick {font-weight:bold;}
 .fluid-container {height:100%;}
 .middle {height:75%;}
