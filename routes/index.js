@@ -10,7 +10,6 @@ exports.login = function(req, res){
 };
 
 exports.index = function(req, res){
-	console.log(res.locals);
   res.render('login');
 };
 

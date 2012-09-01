@@ -12,7 +12,6 @@ var express = require('express')
   , routes = require('./routes')
   , utils = require('./utils');
 
-
 msg ="";
 var app = express();
 time = new Date().getTime(); 
@@ -30,6 +29,10 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.cookieParser('your secret  23 here'));
   app.use(express.session({ key: 'sid', cookie: { maxAge: 60000 }})); 
+  //middleware add session to templates
+  app.use(function(req,res,next){
+  res.locals.session = req.session;
+  next();});
   app.use(express.methodOverride());
   app.use(app.router);
 });
@@ -37,6 +40,7 @@ app.configure(function(){
 app.configure('development', function(){
   app.use(express.errorHandler());
 });
+
 
 
 var server = http.createServer(app);
