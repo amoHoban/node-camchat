@@ -37,8 +37,8 @@
         <form id="chatform" onsubmit="sendMessage(event)">
           <div class="input-append">
             <input class="span2 input-xxlarge" name="msg" placeholder="Your message..." id="appendedInputButton" autocomplete="off" size="255" type="text">
-            <button class="btn" type="button">Send!
-            </button>
+            <input class="btn" type="submit">Send!
+            </input>
           </div>
         </form>
         </div>
@@ -137,7 +137,7 @@ showMessage = function(el, m, t){
 }
 sendMessage = function(event){
   event.preventDefault();
-  chatsocket.send($(msgbox).val(),function(){$(msgbox).val("")});
+  chatsocket.send($(msgbox).val(),function(){$(msgbox).val("");$(msgbox).blur()});
   return false;
 }; 	
 $(window).resize(function(){scrollDownText($("#textarea"));})

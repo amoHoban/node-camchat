@@ -1,6 +1,6 @@
 {
   "name": "snype",
-  "version": "0.0.1-21",
+  "version": "0.0.1-27",
   "private": true,
   "engines": {
     "node": "0.8.x",
@@ -12,8 +12,8 @@
     "stylus": "*",
     "socket.io": "*",
     "ejs-locals": "*",
-    "flashify":"*",
-    "memory-cache":"*"
+    "flashify": "*",
+    "memory-cache": "*"
   },
   "subdomain": "snype",
   "scripts": {

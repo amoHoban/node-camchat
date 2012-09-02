@@ -1,4 +1,6 @@
 jQuery(document).ready(function(){
+    $('body').scrollTop(1);
+
     $("input").focus(function(){
         if ($(this).attr("placeholder").length > 0) $(this).attr("_placeholder",$(this).attr("placeholder")).attr("placeholder","");
     })
