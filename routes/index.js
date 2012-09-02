@@ -3,8 +3,6 @@
  * GET home page.
  */
 
-messages = require('../messages.json');
-
 exports.login = function(req, res){
   res.render('login');
 };

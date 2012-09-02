@@ -12,7 +12,8 @@
     "stylus": "*",
     "socket.io": "*",
     "ejs-locals": "*",
-    "flashify":"*"
+    "flashify":"*",
+    "memory-cache":"*"
   },
   "subdomain": "snype",
   "scripts": {

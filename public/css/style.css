@@ -28,7 +28,7 @@ a {
 }
 #textarea p {
 }
-p.msg {margin:4px;padding:0 4px;}
+p.msg {margin:6px;padding:0 4px;}
 p.even {
 	border-top:1px solid #fbfbfb;
 }
@@ -71,3 +71,4 @@ p.even {
 	-webkit-box-shadow: rgba(200, 200, 200, 0.7) 0 4px 10px -1px;
 	box-shadow: rgba(200, 200, 200, 0.7) 0 4px 10px -1px;
 }
+.emoji {max-width:24px;vertical-align:bottom;}

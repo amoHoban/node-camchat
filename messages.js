@@ -1,7 +1,7 @@
 //my messages middleware!
 var url   = require("url");
 exports.resolveMessages = function(req,res,next){
-  var messages = require('./messages.json');
+  var messages = require('./conf/messages.json');
   res.locals["error"] = res.locals["info"] = res.locals["message"] = "";
   parts = url.parse(req.url).pathname.substr(1).split("/");
   //default first

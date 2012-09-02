@@ -1,0 +1,19 @@
+{
+  "index":
+  {
+    "__title":"SnYpe"
+  },
+  "login":
+  {
+  	"test":
+  	{
+  		"__title":"login-test"
+  	}
+  },
+  "default":
+  {
+  	"__title":"SnYpe",
+  	"__sitetitle":"SnYpe beta"
+  }
+
+}

@@ -10,7 +10,8 @@ var express = require('express')
   , url  = require('url')
   , msgResolver = require('./messages').resolveMessages
   , routes = require('./routes')
-  , utils = require('./utils');
+  , chatutils = require('./chatutils');
+ // , utils = require('./utils');
 
 msg ="";
 var app = express();
@@ -62,7 +63,7 @@ app.post("/",function(req, res){
     console.log(param + " " +req.params(param));
   }
 
-  if (!utils.checkClientNickName(req.param("nickname",""))) {
+  if (!chatutils.checkClientNickName(req.param("nickname",""))) {
     res.render("login",{"error":"Use a valid nickname"});
   }
   else {
@@ -87,14 +88,15 @@ var chat = io
   });
   
   client.on('message', function (data) {
-    if (utils.checkMessageLength(data) && utils.floodCheck(this)) {  
+    if (chatutils.checkMessageLength(data) && chatutils.floodCheck(this)) {  
       client.lastMessageTime = new Date().getTime();
     msg = '<span class="nick">'
           + client.nickname 
           + '</span>'
           + "<strong>:</strong>" 
-          + utils.escapeHTML(data);
-    chat.emit('message',{'text':msg, 'time':client.lastMessageTime});
+          + chatutils.chatfilters(chatutils.escapeHTML(data))
+    //run our custom filters and send
+        chat.emit('message',{'text':msg, 'time':client.lastMessageTime});
     }
   });
  
