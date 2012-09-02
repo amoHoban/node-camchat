@@ -6,6 +6,7 @@ exports.chatfilters = function(msg){
   require("./conf/badwords").forEach(function(word){
       msg = msg.replace(word,"****");
   });
+  msg = msg.replace("&lt;3","&hearts;");
 
 
   
@@ -18,19 +19,17 @@ exports.chatfilters = function(msg){
     console.log("walking");
     if (err) throw err;
     msg = replaceResults(msg);
-    msg = msg.replace("&lt;3","&hearts;");
   return msg;
   });  
   
   }
-  
   return msg;
 
 };
 
 exports.checkClientNickName = function(strVal){
   if (strVal === null) return false;
-  return strVal.length > 3;
+  return strVal.length > 2;
 };
 
 exports.escapeHTML = function(strVal) {
@@ -84,12 +83,13 @@ var removePath = function(results, path){
   results.forEach(function(result){
     newResults.push(result.replace(path,"").replace(".png","").replace(" ",""));
   });
-  return newResults;
+  cache.put("cachednames",newResults,600000);
+  return cache.get("cachednames");
 }
 
 var replaceResults = function(msg){
   results = cache.get("cachedresults");
-  names = removePath(results,"/img/emojis/");
+  names = cache.get("cachednames") || removePath(results,"/img/emojis/");
     i = 0;
     names.forEach(function(name){
       msg = msg.replace(":"+name+":",'<img src="'+results[i]+'" class="emoji" />');

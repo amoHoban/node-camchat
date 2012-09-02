@@ -1,8 +1,9 @@
  <% layout('layout') -%>
   <div class="fluid-container">
+  <h1 class="pagination-centered"><%= __title %></h1>
+
       <div id="login">
-          <form method="POST" action="/" id="loginform">
-            <h1><%= __title %></h1>
+          <form method="POST" action="/chat" id="loginform">
             <div class="input-append">
             <input class="span9" id="appendedInputButton" size="32" name="nickname" placeholder="Choose a nickname.." type="text"><button class="btn" type="button">
             GO!

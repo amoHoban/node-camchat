@@ -6,7 +6,6 @@ jQuery(document).ready(function(){
     $("input").blur(function(){
       if ($(this).attr("_placeholder").length > 0) $(this).attr("placeholder",$(this).attr("_placeholder"));
     })
-
 })
 
 var formatTime = function(unixTimestamp) {

@@ -10,10 +10,10 @@ background: -moz-linear-gradient(top,  rgba(252,252,247,0.56) 0%, rgba(249,248,2
 }
 
 h1 {
-	margin-left:5px;
 	padding:1% 1%;
 	color:#08C;
 	text-shadow:1px 2px #eee;
+	font-size:60px;
 }
 a {
 }
@@ -38,10 +38,19 @@ p.even {
 .userinput{
 	bottom:0;
 	left:0;
-	padding:1%;
+	padding:1% 0;
 	width:100%;
 	height:10%;
-	background:#F4F2F2;
+	background: rgb(0,128,192);
+	background: -moz-linear-gradient(top,  rgba(0,128,192,1) 0%, rgba(41,137,216,1) 50%, rgba(125,185,232,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,128,192,1)), color-stop(50%,rgba(41,137,216,1)), color-stop(100%,rgba(125,185,232,1)));
+	background: -webkit-linear-gradient(top,  rgba(0,128,192,1) 0%,rgba(41,137,216,1) 50%,rgba(125,185,232,1) 100%);
+	background: -o-linear-gradient(top,  rgba(0,128,192,1) 0%,rgba(41,137,216,1) 50%,rgba(125,185,232,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(0,128,192,1) 0%,rgba(41,137,216,1) 50%,rgba(125,185,232,1) 100%);
+	background: linear-gradient(to bottom,  rgba(0,128,192,1) 0%,rgba(41,137,216,1) 50%,rgba(125,185,232,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0080c0', endColorstr='#7db9e8',GradientType=0 );
+	box-shadow:0px -2px 6px #aaa;
+	border-top:2px solid #5FB4DE;
 }
 #appendedInputButton
 {
@@ -57,13 +66,13 @@ p.even {
 .fluid-container {height:100%;}
 .middle {height:75%;}
 #login{
-	width: 320px;
-	padding: 114px 0 0;
-	margin: auto;
+	width: 300px;
+	padding: 2% 0 0;
+	margin: 0 auto;
 }
 #loginform{
 	margin-left: 8px;
-	padding: 26px 24px 46px;
+	padding: 26px 24px 26px;
 	font-weight: normal;
 	background: white;
 	border: 1px solid #E5E5E5;
@@ -72,3 +81,6 @@ p.even {
 	box-shadow: rgba(200, 200, 200, 0.7) 0 4px 10px -1px;
 }
 .emoji {max-width:24px;vertical-align:bottom;}
+#usermenu {margin-top:20px;}
+ul {list-style-type: none;display:inline;margin-left:-2px;padding:5px 5px;}
+ul li {display:inline;padding:3px 2px;}

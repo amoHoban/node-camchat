@@ -58,7 +58,7 @@ io.configure(function () {
 
 app.get("/login", routes.login);
 
-app.post("/",function(req, res){
+app.post("/chat",function(req, res){
   for (param in req.param){
     console.log(param + " " +req.params(param));
   }
@@ -67,11 +67,12 @@ app.post("/",function(req, res){
     res.render("login",{"error":"Use a valid nickname"});
   }
   else {
-    res.render("index",{"nickname":req.param("nickname")});
+    res.render("chat",{"nickname":req.param("nickname")});
   }
 });
 
-app.get("/",routes.index);
+app.get("/",routes.login);
+app.get("/chat",routes.login)
 app.get("/test",routes.test);
 app.get("*",routes.error404);
 

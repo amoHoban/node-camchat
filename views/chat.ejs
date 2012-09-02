@@ -1,0 +1,150 @@
+<%- layout('layout') %>
+<div class="fluid-container">
+<div class="row-fluid">
+  <div class="span9">
+    <h1 class="pagination-centered"><%= __title %></h1>
+  </div>
+  <div class="span3">
+    <section id="usermenu">
+      <ul>
+        <li>
+          <ul><li class="icon-lock">&nbsp;</li><li><a href="#">Logout</a></li><ul>
+          <ul><li class="icon-list">&nbsp;</li><li><a href="#">Profile</a></li></ul>
+        </li>
+      </ul>
+    </section>
+  </div>
+
+</div>
+<div class="row-fluid middle">
+  <div class="span9">
+    <div id="textarea"></div>
+  </div>
+  <div class="span3">
+    <div id="frame" class="visible-desktop draggable">
+      <video id="live" width="280" height="210" autoplay style="display: none;"></video>
+      <canvas width="280" id="canvas" height="210"></canvas>
+    </div>
+    <img width="280" id="partnerCanvas" height="210" />
+    <div id="userlist">
+    </div>
+  </div>
+ </div>
+ <div class="row-fluid">
+    <div class="userinput span12">
+      <div class="row-fluid">
+        <div class="offset1">
+        <form id="chatform" onsubmit="sendMessage(event)">
+          <div class="input-append">
+            <input class="span2 input-xxlarge" name="msg" placeholder="Your message..." id="appendedInputButton" autocomplete="off" size="255" type="text">
+            <button class="btn" type="button">Send!
+            </button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+$('.alert').alert();
+textarea = $("#textarea");
+msgbox = $("#appendedInputButton");
+camWidth = 280;
+camHeight = 210;
+oddEven = "odd";
+$(msgbox).focus();
+chatsocket = io.connect('/chat');
+chatsocket.on("connect",function(){
+  chatsocket.emit("set nickname","<%= nickname %>");
+})
+chatsocket.on('message', function(message) {
+    showMessage("#textarea",message.text,message.time);
+  scrollDownText($("#textarea"));
+});
+
+chatsocket.on("newUser",function(data){
+  console.log(data);
+  close = $("<a/>").addClass('close').attr('data-dismiss','alert').html('&times;');
+  line = $("<p/>").addClass("alert").text("User "+data+" joined").append(close);
+  $(textarea).append(line);
+})
+chatsocket.on("user disconnected",function(user){
+  $(textarea).append("<p class='alert'>User " + user + " disconnected</p>");
+})
+
+camsocket = io.connect('/cam')
+camsocket.on('webcam',function(data){
+  if ($("#partnerCanvas").is(":hidden")){$("#partnerCanvas").fadeIn('slow')}
+  $("#partnerCanvas").attr("src",data.img.img);
+});
+
+function changeSize(w){
+	camWidth = w;
+	camHeight = w * 0.75;
+
+	$("#video, #canvas, #partnerCanvas").height(camHeight).width(camWidth);
+	$("#video, #canvas").click(function(){
+		if (w==320) changeSize(640);
+		else changeSize(320);
+		});
+	};
+
+function removeSenderVideo(){
+  $("#video, #canvas").remove();
+}
+
+window.URL = window.URL || window.webkitURL;
+navigator.getUserMedia  = (navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                      navigator.mozGetUserMedia || navigator.msGetUserMedia);
+var video = $("#live").get()[0];
+var canvas = $("#canvas");
+var ctx = canvas.get()[0].getContext('2d');
+  if (typeof navigator.getUserMedia== 'function') {
+navigator.getUserMedia({video:!0},function(stream) {
+  $("#canvas").fadeIn("slow");
+  video.src = window.URL.createObjectURL(stream);},
+        function(err) {
+            console.log("Unable to get video stream!")
+        }
+)
+
+timer = setInterval(
+    function () {
+        ctx.drawImage(video, 0, 0, camWidth, camHeight);
+        var data = canvas.get()[0].toDataURL('image/jpeg', 1.0);
+        camsocket.emit("webcam",{"img":data});
+}, 250);
+
+}
+else {
+  removeSenderVideo();
+}
+$(msgbox).focus();
+$(textarea).height("63%");
+$(textarea).width("75%");
+$(window).resize(function(){
+	$(textarea).height("63%");
+	$(textarea).width("90%");
+})
+
+showMessage = function(el, m, t){
+  time = $("<small/>").addClass("pull-right").text(formatTime(t/1000));
+	line = $("<p/>").addClass('msg').addClass(oddEven).html(unescape(m)).append(time).hide();
+	$(el).append(line);
+	line.fadeIn();
+  oddEven = (oddEven=="odd"?"even":"odd");
+}
+sendMessage = function(event){
+  event.preventDefault();
+  chatsocket.send($(msgbox).val(),function(){$(msgbox).val("")});
+  return false;
+}; 	
+$(window).resize(function(){scrollDownText($("#textarea"));})
+$("#canvas, #partnerCanvas").draggable({'snap':true,'containment':'window'});
+
+});
+
+</script>
+</div>
+<%- script("/socket.io/socket.io.js","text/javascript") %>
