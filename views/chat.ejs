@@ -53,6 +53,7 @@ msgbox = $("#appendedInputButton");
 camWidth = 280;
 camHeight = 210;
 oddEven = "odd";
+camenabled = false;
 $(msgbox).focus();
 chatsocket = io.connect('/chat');
 chatsocket.on("connect",function(){
@@ -103,6 +104,7 @@ var ctx = canvas.get()[0].getContext('2d');
   if (typeof navigator.getUserMedia== 'function') {
 navigator.getUserMedia({video:!0},function(stream) {
   $("#canvas").fadeIn("slow");
+  camenabled = true;
   video.src = window.URL.createObjectURL(stream);},
         function(err) {
             console.log("Unable to get video stream!")
@@ -113,7 +115,7 @@ timer = setInterval(
     function () {
         ctx.drawImage(video, 0, 0, camWidth, camHeight);
         var data = canvas.get()[0].toDataURL('image/jpeg', 1.0);
-        camsocket.emit("webcam",{"img":data});
+        if (camenabled) camsocket.emit("webcam",{"img":data});
 }, 250);
 
 }

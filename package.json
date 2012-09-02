@@ -1,6 +1,6 @@
 {
   "name": "snype",
-  "version": "0.0.1-27",
+  "version": "0.0.1-28",
   "private": true,
   "engines": {
     "node": "0.8.x",
