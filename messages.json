@@ -1,18 +1,18 @@
 {
   "index":
   {
-    "title":"SnYpe"
+    "__title":"SnYpe"
   },
   "login":
   {
   	"test":
   	{
-  		"title":"login-test"
+  		"__title":"login-test"
   	}
   },
   "default":
   {
-  	"title":"SnYpe"
+  	"__title":"SnYpe"
   }
 
 }
