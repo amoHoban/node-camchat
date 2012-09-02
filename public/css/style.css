@@ -67,13 +67,12 @@ p.even {
 .middle {height:75%;}
 #login{
 	width:100%;
-	max-width: 300px;
+	max-width: 320px;
 	padding: 2% 0 0;
 	margin: 0 auto;
 }
 #loginform{
-	margin-left: 8px;
-	padding: 26px 24px 26px;
+	padding: 26px 30px 26px 12px;
 	font-weight: normal;
 	background: white;
 	border: 1px solid #E5E5E5;

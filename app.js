@@ -10,6 +10,7 @@ var express = require('express')
   , url  = require('url')
   , msgResolver = require('./messages').resolveMessages
   , routes = require('./routes')
+  , messages = require('./conf/messages')
   , chatutils = require('./chatutils');
  // , utils = require('./utils');
 
@@ -75,6 +76,12 @@ app.get("/",routes.login);
 app.get("/chat",routes.login)
 app.get("/test",routes.test);
 app.get("*",routes.error404);
+app.get("/room/create/:id",function(req,res){
+  id = req.param("id",null);
+    if (!id) res.render("index",{error:messages.default.generalError});
+
+});
+  
 
 //use namespaces
 var chat = io
