@@ -12,7 +12,8 @@
   },
   "default":
   {
-  	"__title":"SnYpe"
+  	"__title":"SnYpe",
+  	"__sitetitle":"SnYpe beta"
   }
 
 }
