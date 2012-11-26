@@ -2,6 +2,7 @@
 /**
  * Module dependencies.
  */
+
 var express = require('express')
   , http = require('http')
   , path = require('path')
@@ -45,6 +46,8 @@ app.configure('development', function(){
 
 
 var server = http.createServer(app);
+
+// make socket.io listen on the server
 var io = require('socket.io').listen(server);
 
 server.listen(app.get('port'), function(){
@@ -71,6 +74,7 @@ app.post("/chat",function(req, res){
   }
 });
 
+// use custom routes modules
 app.get("/",routes.login);
 app.get("/chat",routes.login)
 app.get("/test",routes.test);
@@ -87,6 +91,7 @@ var chat = io
 .of('/chat').on('connection', function (client) {
   // Index
   client.lastMessageTime = 0;
+  // catch "set nickname" event from client
   client.on('set nickname', function (nick) {
     client.nickname = nick;
       chat.emit("newUser",nick);
@@ -116,6 +121,7 @@ var chat = io
 var cam = io
 .of('/cam').on('connection',function(camclient){
    camclient.on('webcam', function (data) {
+    //volatile means only send if client doesnt have too many socket "requests"
      camclient.volatile.broadcast.emit('webcam',{'img':data});
   });
   camclient.on('disconnect', function () {
