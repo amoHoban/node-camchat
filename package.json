@@ -18,5 +18,5 @@
   "subdomain": "snype",
   "scripts": {
     "start": "app.js"
-  }
+ }
 }

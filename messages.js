@@ -10,7 +10,6 @@ exports.resolveMessages = function(req,res,next){
       res.locals[m] = messages.default[m];
     }
   }
-
   pagemessages = "messages";
   for (p in parts){
     pagemessages += "."+parts[p];

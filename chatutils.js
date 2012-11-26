@@ -7,8 +7,6 @@ exports.chatfilters = function(msg){
       msg = msg.replace(word,"****");
   });
   msg = msg.replace("&lt;3","&hearts;");
-
-
   
   if (cache.get("cachedresults")){
     //console.log("CACHE "+cache.get("cachedresults"));
